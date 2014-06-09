@@ -1,4 +1,4 @@
-var myVersion = "0.85", myProductName = "River4", flRunningOnServer = true;
+var myVersion = "0.87", myProductName = "River4", flRunningOnServer = true;
 
 
 var http = require ("http"); 
@@ -484,6 +484,9 @@ function dateYesterday (d) {
 	return (new Date (new Date (d) - (24 * 60 * 60 * 1000)));
 	}
 function stripMarkup (s) { //5/24/14 by DW
+	if ((s === undefined) || (s == null) || (s.length == 0)) {
+		return ("");
+		}
 	return (s.replace (/(<([^>]+)>)/ig, ""));
 	}
 function maxStringLength (s, len, flWholeWordAtEnd, flAddElipses) {
@@ -1430,8 +1433,10 @@ function readOneList (listname, filepath) {
 		while (outline = this.read ()) {
 			var type = outline ["#type"];
 			if (type == "feed") {
-				addToFeedsArray (outline.xmlurl, outline, listname);
-				addToFeedsInLists (outline.xmlurl); //5/30/14 by DW
+				if ((outline.xmlurl != undefined) && (outline.xmlurl.length > 0)) { //6/9/14 by DW
+					addToFeedsArray (outline.xmlurl, outline, listname); 
+					addToFeedsInLists (outline.xmlurl); //5/30/14 by DW
+					}
 				}
 			}
 		});
